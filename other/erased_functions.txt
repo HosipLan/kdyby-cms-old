@@ -1,0 +1,86 @@
+
+
+  /**
+   * Error($errno, $errmsg, $filename, $linenum, $vars)
+   * 
+   * Funkce na vlasní error_reporter
+   * princip jsem si vypůjčil z jednoho už hotového scriptu   
+   *            
+   */
+
+  function Error($errno, $errmsg, $filename, $linenum, $vars)
+  { 
+    
+    global $Config, $Time, $_SERVER, $text;
+    $dt = date("Y-m-d H:i:s", $Time);
+
+    $err_dir = $Config['Base_Dir'].$Config['Error_Dir'];
+    
+    if( !file_exists($err_dir) )
+    {
+      if( !@mkdir($err_dir) )
+      {
+        die($text['error']['crit']);
+      }
+    }
+    
+    $ErrorLogFile = $err_dir."/$dt.txt";
+
+    $errortype = array (
+      1 => "Error",
+      2 => "Warning",
+      4 => "Parsing Error",
+      8 => "Notice",
+      16 => "Core Error",
+      32 => "Core Warning",
+      64 => "Compile Error",
+      128 => "Compile Warning",
+      256 => "User Error",
+      512 => "User Warning",
+      1024 => "User Notice"
+    );
+    $user_errors = E_ALL;  //E_ERROR | E_WARNING | E_PARSE;
+    
+    $err = "Error: ".$err."\n"
+         . "Time: ".date("Y-m-d H:i:s", $Time)."\n"
+         . "Script: ".$_SERVER["PHP_SELF"]."\n"
+         . "Remote_addr: ".$_SERVER["REMOTE_ADDR"]."\n"
+         . "User_agent: ".$_SERVER["HTTP_USER_AGENT"]."\n"
+         . "Accept_lang: ".$_SERVER["HTTP_ACCEPT_LANGUAGE"]."\n";
+    
+    $Backtrace = debug_backtrace();
+    array_shift($Backtrace);
+
+    foreach($Backtrace as $Item)
+    {
+      $err .= "\nFile: ".$Item['file']
+           .  " at line: ".$Item['line']." \t".$Item['function']."\n";
+      $arguments = '';
+      if( array_key_exists('args',$Item) )
+      {
+        if( is_array($Item['args']) )
+        {
+          foreach($Item['args'] as $Arg)
+          {
+            if( is_array($Arg) ){ $arguments .= "'".serialize($Arg)."',"; }
+            else{ $arguments .= "'".$Arg."',"; };
+          }
+          if( strlen($arguments)>0 ){ $err .= '('.substr($arguments,0,-1).")"; };
+          $err .= "\n";
+        }
+      }
+    }
+    error_log($err, 3, $ErrorLogFile);
+	  
+    print("\n<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>\n <head>\n".
+          " <meta http-equiv=\"Content-Language\" content=\"".$Config['language']."\">\n".
+          " <meta http-equiv=\"Content-Type\" content=\"text/html; charset=".$Config['encoding']."\">\n  </head>\n <body>\n".
+          '   <p>Došlo k vnitřní chybě!<br> O chybě byl uvědomněn správce webu a chybu brzy odstraní.</p>');
+  	Debug("  <p>".str_replace("<br />", "<br>", nl2br($err))."</p>\n");
+    print(" </body>\n</html>\n\n");
+    
+    if((E_ERROR | E_PARSE) & $errno) die(); 
+  
+  }
+
+  set_error_handler('Error');

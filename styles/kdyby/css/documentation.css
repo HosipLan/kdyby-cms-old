@@ -1,0 +1,82 @@
+/*
+============================================
+         Základní Styl 
+============================================
+*/
+
+* { margin: 0px; padding: 0px; } 
+
+body {
+  font-family: 'Tahoma CE', 'Verdana CE', 'ArialCE', 'Lucida Grande CE', 'Helvetica CE', Tahoma, Verdana, Arial, lucida, sans-serif; 
+  font-size: 13px;
+  text-align: left;
+  color: #000000;
+  background-color: white;
+  padding: 25px; }
+
+h1, h2   {
+	font-size: 16px;
+	font-weight: bold;
+  margin-top: 5px; margin-bottom: 5px;
+  padding-left: 20px; }
+h1 { 
+  display: block;
+  margin-right: 25%;
+  padding-bottom: 2px;
+  border-bottom: 1px solid black; }
+h2 { 
+  font-size: 16px;
+  padding-left: 28px; } 
+
+p { 
+  font-family: 'Courier New', 'Helvetica CE', Tahoma, Verdana, Arial, lucida, sans-serif;
+  padding-left: 40px; }
+
+img { 
+  border: 0px; } 
+i {  } 
+form { 
+  border: 0px; }
+fieldset legend { 
+  color: black;
+  font-weight: bold;
+  padding-left: 3px;
+  padding-right: 4px; }
+input { 
+  display: inline;
+  border: 1px solid #d3d3d3; 
+  background: white;
+  color: black; }
+input.hidden { 
+  display: none; }
+input.inputradio { 
+  display: inline; height: 13px;
+  border: 0px; margin: 0px; padding: 0px;
+  background-color: black; }
+button { 
+  display: inline;
+  border: 1px solid black;
+  background: white; }
+textarea { 
+  display: inline;
+  border: 1px solid black;
+  background: white; }
+select { 
+  display: inline;
+  border: 1px solid black; } 
+select optgroup { 
+  font-style: normal;
+  font-weight: normal; }
+hr {  }
+label { font-size: 13px; }
+table { font-size: 13px; }
+table thead { font-weight: bold; }
+table tr.red td { color: red; }
+#center #hlavni .text table td.no_hover a:hover { 
+  color:#000000; 
+  text-decoration:none; 
+  background-color:#ffffff; }
+table td { padding: 2px; }
+
+
+
